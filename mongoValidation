@@ -1,0 +1,115 @@
+db.createCollection('users',{
+    validator:{
+        $jsonSchema:{
+            bsonType:'object',
+            required:['name','email'],
+            properties:{
+                name:{
+                    bsonType:'string',
+                    description:'name should be a string and required'
+                },
+                email:{
+                    bsonType:'string',
+                    description:'email should be a string and required'
+                },
+                age:{
+                    bsonType:'int',
+                    description:'age should be an inetger'
+                }
+            }
+        }
+    }
+})
+
+db.createCollection('posts',{
+    validator:{
+        $jsonSchema:{
+            bsonType:'object',
+            required:['title','text','authorId'],
+            properties:{
+                title:{
+                    bsonType:'string',
+                    description:'title should be a string and required'
+                },
+                text:{
+                    bsonType:'string',
+                    description:'text should be a string and required'
+                },
+                authorId:{
+                    bsonType:'objectId',
+                    description:'authorId should be an ObjectId'
+                },
+                tags:{
+                    bsonType:'array',
+                    description:'tags should be string array if exists'
+                },
+                comments:{
+                    bsonType:'array',
+                    description:'comments are array of objects if exists',
+                    items:{
+                        bsonType:'object',
+                        required:['text','userId'],
+                        properties:{
+                            text:{
+                                bsonType:'string',
+                                description:'text should be a string and required'
+                            },
+                            userId:{
+                                bsonType:'objectId',
+                                description:'userId should be an ObjectId'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+})
+
+
+db.runCommand({
+    collMod:'posts',
+    validator:{
+        $jsonSchema:{
+            bsonType:'object',
+            required:['title','text','authorId'],
+            properties:{
+                title:{
+                    bsonType:'string',
+                    description:'title should be a string and required'
+                },
+                text:{
+                    bsonType:'string',
+                    description:'text should be a string and required'
+                },
+                authorId:{
+                    bsonType:'objectId',
+                    description:'authorId should be an ObjectId'
+                },
+                tags:{
+                    bsonType:'array',
+                    description:'tags should be string array if exists'
+                },
+                comments:{
+                    bsonType:'array',
+                    description:'comments are array of objects if exists',
+                    items:{
+                        bsonType:'object',
+                        required:['text','userId'],
+                        properties:{
+                            text:{
+                                bsonType:'string',
+                                description:'text should be a string and required'
+                            },
+                            userId:{
+                                bsonType:'objectId',
+                                description:'userId should be an ObjectId'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    validationAction:'warn'
+})
